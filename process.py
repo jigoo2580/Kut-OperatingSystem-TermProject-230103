@@ -7,6 +7,7 @@ class process() :
   ta_time = 0 #turnaround_time
   nt_time = 0 #normalized turnaround time
   res_ratio = 0 #Response ratio
+  work_val = 0 #얼마나 일했는지.
 
   #프로세스에 기본 값 넣기.
   def value_input(self, name = 'p1' , arr_time = 0, bst_time = 0) :
@@ -17,11 +18,13 @@ class process() :
 
   #프로세스를 진행시킬 때 사용.
   def advence_progress(self, processor_work_val) : 
-    if (self.lb_time - processor_work_val) < 0 :
-      self.lb_time = 0
+    if (self.work_val + processor_work_val) > self.b_time :
+      self.work_val = self.b_time
     else : 
-      self.lb_time -= processor_work_val
+      self.work_val += processor_work_val
 
+    self.lb_time = self.b_time - self.work_val
+      
   #프로세스 대기중.
   def waiting_turn(self) :
     self.w_time += 1 
@@ -50,6 +53,7 @@ class process() :
   def see_in_val(self) :
     print(f'이름 : {self.proc_name}, AT : {self.a_time}, BT : {self.b_time}, LBT : {self.lb_time}')
     print(f'WT : {self.w_time}, TT : {self.ta_time}, NTT : {self.nt_time}, Res_ratio : {self.res_ratio}')
+    print(f'{self.work_val}')
 
 #프로세스를 추가하는 함수, 가변 변수를 프로그램 동작 중 선언할 수 있는 함수.
 def proc_add(*, name = 'p1', arr_time = 0, bst_time = 0) :
