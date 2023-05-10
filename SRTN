@@ -1,41 +1,31 @@
+import process
+
 #SRTN
-def srtnAlgorithm(processList = []) :
+def srtn(process_list = []) :
     result = [] #결과
-    processList.sort(key = lambda x:x['LBT']) #LBT를 기준으로 정렬, (LBT -Left Burst Time) 
+    process_list.sort(key = lambda process:process.lb_time) #LBT를 기준으로 정렬, (LBT -Left Burst Time) 
     #중복되는 남은 BT를 가진 프로세스를 찾아 정렬, AT(도착 시간) 기준.
-    for i in range(len(processList)-1) : 
+    for i in range(len(process_list)-1) : 
       #만약 남은 BT가 같고 i가 i+1 보다 AT가 클때(더 늦게 도착했을 때) 서로 위치를 바꾼다. - 먼저 온 순.
-      if processList[i]['LBT'] == processList[i+1]['LBT'] and processList[i]['AT'] > processList[i+1]['AT'] : 
-        temp = processList[i]
-        processList[i] = processList[i+1]
-        processList[i+1] = temp
-    result = processList
+      if process_list[i].lb_time == process_list[i+1].lb_time and processList[i].a_time > processList[i+1].a_time : 
+        temp = process_list[i]
+        process_list[i] = process_list[i+1]
+        process_list[i+1] = temp
+    result = process_list
     return result #결과를 반환
 
 
 #테스트
 if __name__ == '__main__' :
-    testProcess = [{'name': 'p1', 'AT': 0, 'BT': 7,'LBT':7, 'WT': 0, 'TT': 0, 'NTT': 0 }, 
-    {'name': 'p2', 'AT': 2, 'BT': 3,'LBT':3, 'WT': 0, 'TT': 0, 'NTT': 0 }, 
-    {'name': 'p3', 'AT': 3, 'BT': 4,'LBT':4, 'WT': 0, 'TT': 0, 'NTT': 0 },
-    {'name': 'p4', 'AT': 5, 'BT': 2,'LBT':2, 'WT': 0, 'TT': 0, 'NTT': 0 },
-    {'name': 'p5', 'AT': 6, 'BT': 5,'LBT':5, 'WT': 0, 'TT': 0, 'NTT': 0 }] #테스트용 리스트.
-    
-    testProcess2 = [{'name': 'p1', 'AT': 0, 'BT': 7, 'LBT':7, 'WT': 0, 'TT': 0, 'NTT': 0 }, 
-    {'name': 'p2', 'AT': 2, 'BT': 7,'LBT':7, 'WT': 0, 'TT': 0, 'NTT': 0 }, 
-    {'name': 'p3', 'AT': 3, 'BT': 4,'LBT':4, 'WT': 0, 'TT': 0, 'NTT': 0 },
-    {'name': 'p4', 'AT': 5, 'BT': 7,'LBT':7, 'WT': 0, 'TT': 0, 'NTT': 0 },
-    {'name': 'p5', 'AT': 6, 'BT': 5,'LBT':5, 'WT': 0, 'TT': 0, 'NTT': 0 },
-    {'name': 'p7', 'AT': 8, 'BT': 5,'LBT':5, 'WT': 0, 'TT': 0, 'NTT': 0 },
-    {'name': 'p6', 'AT': 7, 'BT': 5,'LBT':5, 'WT': 0, 'TT': 0, 'NTT': 0 }] #테스트용 리스트2 중복 체크용.
+    test_process_list = []
 
-    srtnAlgorithm(testProcess)
-    srtnAlgorithm(testProcess2)
+    for i in range(5) : 
+      name = f'test{i}'
+      process.proc_add(name = f'test{i}', arr_time = 1 + 2*i, bst_time = 7 - i)
+      test_process_list.append(eval(f'process.test{i}'))
+      test_process_list[i].see_in_val()
 
-    for i in range(len(testProcess)) :
-        print(testProcess[i].get('name'), end=' ')
-
-    print()
-
-    for i in range(len(testProcess2)) :
-        print(testProcess2[i].get('name'), end=' ')
+    print('----------------------------------')
+    srtn(test_process_list)
+    for i in range(5):
+      test_process_list[i].see_in_val()
