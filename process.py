@@ -8,6 +8,7 @@ class process() :
   nt_time = 0 #normalized turnaround time
   res_ratio = 0 #Response ratio
   work_val = 0 #얼마나 일했는지.
+  work_state = False #방금 시퀸스에 일을 했는지.
 
   #프로세스에 기본 값 넣기.
   def value_input(self, name = 'p1' , arr_time = 0, bst_time = 0) :
@@ -67,6 +68,7 @@ if __name__ == '__main__' :
   un_done_list = []
   done_list = []
   test = True
+  test_2 = process()
   
   input_nam = input('프로세스 이름을 입력하시오 : ')
   input_arr = int(input('프로세스 도착시간을 입력하시오 : '))
@@ -78,7 +80,7 @@ if __name__ == '__main__' :
 
   while process_list[0].lb_time != 0 : 
     if test == True :
-      process_list[0].advence_progress(1)
+      process_list[0].advence_progress(2)
       test = False
     else :
       process_list[0].waiting_turn()
@@ -92,3 +94,30 @@ if __name__ == '__main__' :
       process_list[0].job_done(un_done_list, done_list)
       
   process_list[0].see_in_val()
+  test_2 = process_list[0]
+  test_3 = process_list[0]
+  print(test_2)
+  test_2.see_in_val()
+  print('---------------------')
+  test_3.see_in_val()
+  print(test_3)
+
+  print()
+
+  proc_add(name = input_nam, arr_time = input_arr, bst_time = input_bst)
+  process_list.append(globals()[f'{input_nam}'])
+  process_list[0].see_in_val()
+
+  proc_add(name = 'test', arr_time = 0, bst_time = 9)
+  proc_add(name = 'test2', arr_time = 0, bst_time = 7)
+  test.see_in_val()
+  test2.see_in_val()
+  proc = test
+  test.advence_progress(2)
+  proc.see_in_val()
+  proc.advence_progress(2)
+  proc.see_in_val()
+  test.see_in_val()
+  proc = test2
+  proc.see_in_val()
+  test.see_in_val()
